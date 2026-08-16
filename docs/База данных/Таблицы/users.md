@@ -6,8 +6,8 @@
 * `oauth_provider` (VARCHAR(50), Nullable) — 'google', 'vk' или null.
 * `oauth_id` (VARCHAR(100), Nullable) — ID в соцсети.
 * `is_admin` (BOOLEAN, Default False) — флаг администратора.
-* `country_id` (INT, Nullable, Foreign Key -> countries.id, ON DELETE SET NULL) — страна проживания.
-* `city_id` (INT, Nullable, Foreign Key -> cities.id, ON DELETE SET NULL) — город проживания.
+* `country_id` (INT, Nullable, Foreign Key -> countries.id, ON DELETE SET NULL) — страна проживания для обычных пользователей. Для администраторов связь с городами осуществляется через таблицу `admin_city_assignments`.
+* `city_id` (INT, Nullable, Foreign Key -> cities.id, ON DELETE SET NULL) — город проживания для обычных пользователей.
 * `whatsapp` (VARCHAR(50), Nullable) — телефон для WhatsApp.
 * `telegram` (VARCHAR(100), Nullable) — никнейм в Telegram.
 * `zalo` (VARCHAR(50), Nullable) — телефон/ID Zalo (популярно во Вьетнаме).
