@@ -1,6 +1,7 @@
 ### Таблица `items` (Единая таблица вещей, заявок и товаров)
 * `id` (SERIAL, Primary Key)
 * `user_id` (INT, Nullable, Foreign Key -> users.id, ON DELETE SET NULL) — автор заявки (null, если вещь добавил сам админ).
+* `city_id` (INT, Nullable, Foreign Key -> cities.id, ON DELETE SET NULL) — город, где физически находится вещь (для вывода на витрине и фильтрации).
 * `title` (VARCHAR(255), Not Null) — название вещи.
 * `description` (TEXT) — состояние, дефекты, описание.
 * `price` (NUMERIC(10, 2), Not Null) — цена (согласованная или предложенная клиентом).
