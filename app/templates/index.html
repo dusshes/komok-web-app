@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Добро пожаловать в Комок!</h1>
+            <p class="col-md-8 fs-4">Это ваш сервис для управления данными. Выберите нужный регион или начните работу.</p>
+        </div>
+    </div>
+
+    <h3>Доступные страны:</h3>
+    <ul class="list-group">
+        {% for country in countries %}
+            <li class="list-group-item">{{ country.name }}</li>
+        {% else %}
+            <li class="list-group-item">Данных о странах пока нет.</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
