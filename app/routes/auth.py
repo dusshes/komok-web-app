@@ -10,6 +10,7 @@ auth_bp = Blueprint('auth', __name__)
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     next_url = request.args.get('next')
+    email = ''
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -21,57 +22,54 @@ def login():
         else:
             flash('Неверный Email или пароль')
             
-    return '''
-        <h3>Вход</h3>
-        <form method="POST">
-            Email: <input type="email" name="email" required><br>
-            Пароль: <input type="password" name="password" required><br>
-            <button type="submit">Войти</button>
-        </form>
-        <p><a href="/register">Регистрация</a></p>
-    '''
+    return render_template('login.html', email=email)
+
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     countries = Country.query.all()
     cities = City.query.all()
     
+    form_data = {}
+    
     if request.method == 'POST':
-        email = request.form.get('email')
+        form_data = {
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'city_id': request.form.get('city_id'),
+            'whatsapp': request.form.get('whatsapp'),
+            'telegram': request.form.get('telegram'),
+            'zalo': request.form.get('zalo'),
+            'max': request.form.get('max'),
+            'preferred_contact': request.form.get('preferred_contact'),
+            'payout_details': request.form.get('payout_details')
+        }
         password = request.form.get('password')
-        name = request.form.get('name')
-        city_id = request.form.get('city_id')
-        whatsapp = request.form.get('whatsapp')
-        telegram = request.form.get('telegram')
-        zalo = request.form.get('zalo')
-        max_val = request.form.get('max')
-        preferred_contact = request.form.get('preferred_contact')
-        payout_details = request.form.get('payout_details')
         
         # Валидация
         if len(password) < 6:
             flash('Пароль должен содержать не менее 6 символов')
-            return redirect(url_for('auth.register'))
+            return render_template('register.html', cities=cities, form_data=form_data)
             
-        if not any([whatsapp, telegram, zalo, max_val]):
+        if not any([form_data['whatsapp'], form_data['telegram'], form_data['zalo'], form_data['max']]):
             flash('Пожалуйста, укажите хотя бы один способ связи (WhatsApp, Telegram, Zalo или Max)')
-            return redirect(url_for('auth.register'))
+            return render_template('register.html', cities=cities, form_data=form_data)
             
-        if User.query.filter_by(email=email).first():
+        if User.query.filter_by(email=form_data['email']).first():
             flash('Этот Email уже зарегистрирован в системе')
-            return redirect(url_for('auth.register'))
+            return render_template('register.html', cities=cities, form_data=form_data)
         
         new_user = User(
-            email=email,
-            name=name,
+            email=form_data['email'],
+            name=form_data['name'],
             password_hash=generate_password_hash(password),
-            city_id=city_id,
-            whatsapp=whatsapp,
-            telegram=telegram,
-            zalo=zalo,
-            max=max_val,
-            preferred_contact=preferred_contact,
-            payout_details=payout_details
+            city_id=form_data['city_id'],
+            whatsapp=form_data['whatsapp'],
+            telegram=form_data['telegram'],
+            zalo=form_data['zalo'],
+            max=form_data['max'],
+            preferred_contact=form_data['preferred_contact'],
+            payout_details=form_data['payout_details']
         )
         db.session.add(new_user)
         db.session.commit()
@@ -79,26 +77,8 @@ def register():
         flash('Регистрация прошла успешно! Теперь вы можете войти.')
         return redirect(url_for('auth.login'))
             
-    return f'''
-        <h3>Регистрация</h3>
-        <form method="POST">
-            Имя: <input type="text" name="name" required><br>
-            Email: <input type="email" name="email" required><br>
-            Пароль: <input type="password" name="password" required><br>
-            Город: <select name="city_id">{''.join([f'<option value="{c.id}">{c.name}</option>' for c in cities])}</select><br>
-            WhatsApp: <input type="text" name="whatsapp"><br>
-            Telegram: <input type="text" name="telegram"><br>
-            Zalo: <input type="text" name="zalo"><br>
-            Max: <input type="text" name="max"><br>
-            Предпочитаемый способ: 
-            <select name="preferred_contact">
-                <option value="email">Email</option><option value="whatsapp">WhatsApp</option>
-                <option value="telegram">Telegram</option><option value="zalo">Zalo</option><option value="max">Max</option>
-            </select><br>
-            Реквизиты для выплат: <textarea name="payout_details"></textarea><br>
-            <button type="submit">Зарегистрироваться</button>
-        </form>
-    '''
+    return render_template('register.html', cities=cities, form_data=form_data)
+
 
 @auth_bp.route('/logout')
 @login_required

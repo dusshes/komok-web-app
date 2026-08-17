@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card p-4">
+            <h3 class="mb-4">Регистрация</h3>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Имя</label>
+                    <input type="text" name="name" class="form-control" value="{{ form_data.get('name', '') }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" value="{{ form_data.get('email', '') }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Город</label>
+                    <select name="city_id" class="form-select">
+                        {% for city in cities %}
+                            <option value="{{ city.id }}" {% if form_data.get('city_id')|int == city.id %}selected{% endif %}>{{ city.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">WhatsApp</label>
+                        <input type="text" name="whatsapp" class="form-control" value="{{ form_data.get('whatsapp', '') }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Telegram</label>
+                        <input type="text" name="telegram" class="form-control" value="{{ form_data.get('telegram', '') }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Zalo</label>
+                        <input type="text" name="zalo" class="form-control" value="{{ form_data.get('zalo', '') }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Max</label>
+                        <input type="text" name="max" class="form-control" value="{{ form_data.get('max', '') }}">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Предпочитаемый способ связи</label>
+                    <select name="preferred_contact" class="form-select">
+                        <option value="email" {% if form_data.get('preferred_contact') == 'email' %}selected{% endif %}>Email</option>
+                        <option value="whatsapp" {% if form_data.get('preferred_contact') == 'whatsapp' %}selected{% endif %}>WhatsApp</option>
+                        <option value="telegram" {% if form_data.get('preferred_contact') == 'telegram' %}selected{% endif %}>Telegram</option>
+                        <option value="zalo" {% if form_data.get('preferred_contact') == 'zalo' %}selected{% endif %}>Zalo</option>
+                        <option value="max" {% if form_data.get('preferred_contact') == 'max' %}selected{% endif %}>Max</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Реквизиты для выплат</label>
+                    <textarea name="payout_details" class="form-control">{{ form_data.get('payout_details', '') }}</textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
