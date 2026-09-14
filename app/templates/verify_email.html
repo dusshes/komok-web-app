@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <h3 class="mb-4">Подтверждение Email</h3>
+            <p>Мы отправили код подтверждения на ваш email: <strong>{{ email }}</strong></p>
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <input type="hidden" name="email" value="{{ email }}">
+                <div class="mb-3">
+                    <label class="form-label">Код подтверждения (6 цифр)</label>
+                    <input type="text" name="code" class="form-control" maxlength="6" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Подтвердить</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

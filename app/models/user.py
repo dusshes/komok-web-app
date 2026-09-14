@@ -25,6 +25,7 @@ class User(db.Model, UserMixin):
     preferred_contact = db.Column(db.String(20), default='email')
     
     payout_details = db.Column(db.Text, nullable=True)
+    is_verified = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     # Связи

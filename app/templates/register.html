@@ -4,62 +4,94 @@
     <div class="col-md-8">
         <div class="card p-4">
             <h3 class="mb-4">Регистрация</h3>
-            <form method="POST">
+            <form method="POST" novalidate>
+                {{ form.hidden_tag() }}
+                
                 <div class="mb-3">
-                    <label class="form-label">Имя</label>
-                    <input type="text" name="name" class="form-control" value="{{ form_data.get('name', '') }}" required>
+                    {{ form.name.label(class="form-label") }}
+                    {{ form.name(class="form-control " + ("is-invalid" if form.name.errors else "")) }}
+                    {% for error in form.name.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-control" value="{{ form_data.get('email', '') }}" required>
+                    {{ form.email.label(class="form-label") }}
+                    {{ form.email(class="form-control " + ("is-invalid" if form.email.errors else "")) }}
+                    {% for error in form.email.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Пароль</label>
-                    <input type="password" name="password" class="form-control" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Город</label>
-                    <select name="city_id" class="form-select">
-                        {% for city in cities %}
-                            <option value="{{ city.id }}" {% if form_data.get('city_id')|int == city.id %}selected{% endif %}>{{ city.name }}</option>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ form.password.label(class="form-label") }}
+                        {{ form.password(class="form-control " + ("is-invalid" if form.password.errors else "")) }}
+                        {% for error in form.password.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
                         {% endfor %}
-                    </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ form.confirm_password.label(class="form-label") }}
+                        {{ form.confirm_password(class="form-control " + ("is-invalid" if form.confirm_password.errors else "")) }}
+                        {% for error in form.confirm_password.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    {{ form.city_id.label(class="form-label") }}
+                    {{ form.city_id(class="form-select " + ("is-invalid" if form.city_id.errors else "")) }}
+                    {% for error in form.city_id.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">WhatsApp</label>
-                        <input type="text" name="whatsapp" class="form-control" value="{{ form_data.get('whatsapp', '') }}">
+                        {{ form.whatsapp.label(class="form-label") }}
+                        {{ form.whatsapp(class="form-control " + ("is-invalid" if form.whatsapp.errors else "")) }}
+                        {% for error in form.whatsapp.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Telegram</label>
-                        <input type="text" name="telegram" class="form-control" value="{{ form_data.get('telegram', '') }}">
+                        {{ form.telegram.label(class="form-label") }}
+                        {{ form.telegram(class="form-control " + ("is-invalid" if form.telegram.errors else "")) }}
+                        {% for error in form.telegram.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Zalo</label>
-                        <input type="text" name="zalo" class="form-control" value="{{ form_data.get('zalo', '') }}">
+                        {{ form.zalo.label(class="form-label") }}
+                        {{ form.zalo(class="form-control " + ("is-invalid" if form.zalo.errors else "")) }}
+                        {% for error in form.zalo.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label class="form-label">Max</label>
-                        <input type="text" name="max" class="form-control" value="{{ form_data.get('max', '') }}">
+                        {{ form.max_val.label(class="form-label") }}
+                        {{ form.max_val(class="form-control " + ("is-invalid" if form.max_val.errors else "")) }}
+                        {% for error in form.max_val.errors %}
+                            <div class="invalid-feedback">{{ error }}</div>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Предпочитаемый способ связи</label>
-                    <select name="preferred_contact" class="form-select">
-                        <option value="email" {% if form_data.get('preferred_contact') == 'email' %}selected{% endif %}>Email</option>
-                        <option value="whatsapp" {% if form_data.get('preferred_contact') == 'whatsapp' %}selected{% endif %}>WhatsApp</option>
-                        <option value="telegram" {% if form_data.get('preferred_contact') == 'telegram' %}selected{% endif %}>Telegram</option>
-                        <option value="zalo" {% if form_data.get('preferred_contact') == 'zalo' %}selected{% endif %}>Zalo</option>
-                        <option value="max" {% if form_data.get('preferred_contact') == 'max' %}selected{% endif %}>Max</option>
-                    </select>
+                    {{ form.preferred_contact.label(class="form-label") }}
+                    {{ form.preferred_contact(class="form-select " + ("is-invalid" if form.preferred_contact.errors else "")) }}
+                    {% for error in form.preferred_contact.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Реквизиты для выплат</label>
-                    <textarea name="payout_details" class="form-control">{{ form_data.get('payout_details', '') }}</textarea>
+                    {{ form.payout_details.label(class="form-label") }}
+                    {{ form.payout_details(class="form-control " + ("is-invalid" if form.payout_details.errors else "")) }}
+                    {% for error in form.payout_details.errors %}
+                        <div class="invalid-feedback">{{ error }}</div>
+                    {% endfor %}
                 </div>
-                <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+                {{ form.submit(class="btn btn-primary w-100") }}
             </form>
         </div>
     </div>
